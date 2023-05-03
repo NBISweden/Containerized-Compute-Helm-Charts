@@ -9,7 +9,7 @@ curl --request POST \
   "description": "Demonstrates handling single http file input. Will output some nice looking JSON to stdout.",
   "inputs": [
     {
-      "url": "htsget://bearer:eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyN@127.0.0.1:3000/reads/s3/NA12878.bam",
+      "url": "htsget://bearer:eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyN@{YOUR_HOSTNAME_HERE}:3000/reads/s3/NA12878.bam",
       "path": "/tes/volumes/input",
       "type": "FILE"
     }
