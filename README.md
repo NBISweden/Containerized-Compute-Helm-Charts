@@ -59,7 +59,7 @@ In `upload.sh` there is a simple script that uploads a dataset to SDA.
 
 - `sda-admin` and `sda-cli` in your `$PATH`
 - access token from `http://localhost:8085/`
-- `s3cmd.conf` file in the same directory as the script. You can just replace <access_token> in this example:
+- `s3cmd.conf` file in the same directory as the script. You can just replace `<access_token>` in this example:
 
 ```bash
 [default]
@@ -90,7 +90,7 @@ token=<access_token>
 curl -H "Authorization: Bearer $token" http://localhost:8443/s3/<dataset>/jd123_lifescience-ri.eu/<folder_name>/<file_name>
 ```
 
-## Running a worflow from the compute-web
+## Running a worfklow from the compute-web
 
 1. Log in to `http://localhost:4180`
 2. Select a workflow on the home page
