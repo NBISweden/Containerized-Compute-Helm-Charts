@@ -1,0 +1,108 @@
+services:
+  web:
+    user: root
+    image: cerit.io/cerit/snakemake-web:2024-08-25
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - update-ca-certificates && uvicorn --host 0.0.0.0 --port 80 --interface wsgi run:create_app
+    ports:
+      - 8081:80
+    networks:
+      - private
+      - my-app-network
+    environment:
+      - CONFIG_FILE=/config/config.cfg
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    volumes:
+      - ./config/config.cfg:/config/config.cfg
+      - snakemake-data:/snakemake:rw
+      # Only needed when using a selfsigned certificate
+      - ../lsaai-mock/configuration/nginx/certs/nginx.crt:/usr/local/share/ca-certificates/aai.crt
+
+  celery:
+    user: root
+    image: cerit.io/cerit/snakemake-web:2024-08-25
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - update-ca-certificates && python -m celery -A celery_entrypoint.celery worker --loglevel=info --pool=eventlet --concurrency=100
+    networks:
+      - private
+      - my-app-network
+
+    environment:
+      - CONFIG_FILE=/config/config.cfg
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
+    volumes:
+      - ./config/config.cfg:/config/config.cfg
+      - snakemake-data:/snakemake
+      # Only needed when using a selfsigned certificate
+      - ../lsaai-mock/configuration/nginx/certs/nginx.crt:/usr/local/share/ca-certificates/aai.crt
+
+  proxy:
+    user: root
+    image: bitnami/oauth2-proxy:7.6.0-debian-12-r18
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - update-ca-certificates && oauth2-proxy --config=/etc/oauth2_proxy/oauth2_proxy.cfg
+    ports:
+      - 4180:4180
+    environment:
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://aai.localhost/oidc/
+    volumes:
+      - ./config/oauth2_proxy.cfg:/etc/oauth2_proxy/oauth2_proxy.cfg
+      # Only needed when using a selfsigned certificate
+      - ../lsaai-mock/configuration/nginx/certs/nginx.crt:/etc/ssl/certs/aai.crt
+    networks:
+      - private
+      - my-app-network
+
+  compute-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - private
+    volumes:
+      - redis-data:/data
+
+  compute-rabbitmq:
+    image: rabbitmq:3.8-alpine
+    ports:
+      - 5672:5672
+    networks:
+      - private
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  compute-mongo:
+    image: bitnami/mongodb:latest
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_ROOT_PASSWORD: rootpass
+      MONGODB_USERNAME: snakemake
+      MONGODB_PASSWORD: snakemakepassword
+      MONGODB_DATABASE: snakemake
+
+    networks:
+      - private
+    volumes:
+      - mongo-data:/bitnami/mongodb
+
+volumes:
+  snakemake-data:
+  redis-data:
+  rabbitmq-data:
+  mongo-data:
+
+networks:
+  private:
+  my-app-network:
+    external: true

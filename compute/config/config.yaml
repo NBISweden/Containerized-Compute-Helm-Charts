@@ -1,0 +1,44 @@
+Database: boltdb
+
+BoltDB:
+  Path: /opt/funnel/funnel-work-dir/funnel.bolt.db
+
+Compute: local
+
+Logger:
+  Level: debug
+
+HTSGETStorage:
+  Disabled: false
+  Protocol: https
+  SendPublicKey: true
+
+Server:
+  # Require Bearer JWT authentication for the server APIs.
+  # Server won't launch when configuration URL cannot be loaded.
+  OidcAuth:
+    # URL of the OIDC service configuration:
+    ServiceConfigUrl: 'https://aai.localhost/oidc/.well-known/openid-configuration'
+    # Client ID and secret are sent with the token introspection request
+    # (Basic authentication):
+    ClientId: 'app-123'
+    ClientSecret: 'secret_value'
+    # Optional: if specified, this scope value must be in the token:
+    # RequireScope:
+    # Optional: if specified, this audience value must be in the token:
+    RequireAudience: 'snake123'
+  BasicAuth:
+    - User: 'user'
+      Password: 'password'
+
+  HostName: 0.0.0.0
+
+  # Port used for HTTP communication and the web dashboard.
+  HTTPPort: 8010
+
+  # Port used for RPC communication.
+  RPCPort: 9090
+
+RPCClient:
+  User: 'user'
+  Password: 'password'

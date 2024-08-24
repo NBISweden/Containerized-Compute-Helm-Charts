@@ -1,0 +1,34 @@
+services:
+  funnel:
+    image: cerit.io/cerit/funnel-dind:2024-08-24
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - update-ca-certificates && entrypoint.sh /app/funnel server run --config /config/config.yaml
+    ports:
+      - 8010:8010
+      - 9090:9090
+    privileged: true
+    healthcheck:
+      test: ['CMD', 'curl', '-fkq', 'http://localhost:8010/health.html']
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - private
+      - my-app-network
+    volumes:
+      - data:/opt/funnel/funnel-work-dir
+      - ./config:/config
+      # Only needed when using a selfsigned certificate
+      - ../lsaai-mock/configuration/nginx/certs/nginx.crt:/etc/ssl/certs/aai.crt
+
+volumes:
+  data:
+  cache:
+
+networks:
+  private:
+  my-app-network:
+    external: true

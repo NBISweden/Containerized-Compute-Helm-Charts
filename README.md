@@ -1,45 +1,99 @@
-# Starter-kit-containers
+# First time setup guide
 
-## Funnel Docker image
+## Create the global docker network
 
-The Containers implementation for GDI is based on the [TES API](https://github.com/ga4gh/task-execution-schemas) and [funnel](https://ohsu-comp-bio.github.io/funnel/) implementations, the funnel link contains also full funnel documentation. For GDI, it is required to use the forked funnel version from [CERIT-SC github repository](https://github.com/CERIT-SC/funnel-gdi), this version includess support for `htsget` protocol for data staging. The repository is needed to build the Docker image. Pre-built image is available at `cerit.io/gdi/funnel:v0.11`. 
-
-To build from sources and build own Docker image, just type:
-```
-git clone https://github.com/CERIT-SC/funnel-gdi
-cd funnel-gdi
-docker build -t {registry/imagename} .
-docker push -t {registry/imagename}
+```bash
+docker network create my-app-network
 ```
 
-## Running the service
+## Setup LSAAI Mock
 
-Best option for running the funnel container service is using [docker compose](https://docs.docker.com/compose/). Note that v2.17.3 or later of Docker Compose is required and it is tested version known to work.
+Generate a self-signed certificate for the LSAAI nginx proxy using this command:
 
-To run the service, just type:
-```
-git clone https://github.com/CERIT-SC/starter-kit-containers.git
-cd starter-kit-containers
-docker-compose up 
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./lsaai-mock/configuration/nginx/certs/nginx.key -out ./lsaai-mock/configuration/nginx/certs/nginx.crt -addext subjectAltName=DNS:aai.localhost
 ```
 
-Note that the service requires privileged container as it runs Docker in Docker which does not work without privileged mode.
+## Setup REMS
 
-## Testing service
+1. Generate jwks
 
-The `examples` directory contains three tests, all are just simple bash scripts to run a task into the funnel. The first `example-hello.sh` is simple example without any input/ouput files to test standalone task submission. 
-
-Invocation and expected response:
-```
-./examples/example-hello.sh
-{"id":"ch9cdbm7ilkm719vmd4g"}
+```bash
+cd rems
+python generate_jwks.py
+cd ..
 ```
 
-Task with id `ch9cdbm7ilkm719vmd4g` has been created.
+2. Initialize the database
 
-The funnel container should print something like: 
-```
-starter-kit-containers-funnel-1  | {"attempt":0,"index":0,"level":"info","msg":"EXECUTOR_STDOUT","ns":"local","stdout":"TESK says: Hello World\n","taskID":"ch9cdbm7ilkm719vmd4g","time":"2023-05-03T20:40:17Z","timestamp":"2023-05-03T20:40:17.603416431Z"}
+```bash
+./rems/migrate.sh
 ```
 
-There are two more examples: `example-htsget.sh` and `example-auth.sh` both showing how to use `htsget` protocol and how to use authentication. However, for these two examples to work, it is needed to run [starter-kit-hstget](https://github.com/GenomicDataInfrastructure/starter-kit-htsget/tree/feature/minimal-htsget) and it is needed to be properly configured, mainly, replace the `localhost` and the `s3-archive` in [config](https://github.com/GenomicDataInfrastructure/starter-kit-htsget/blob/feature/minimal-htsget/config/config.json) with the hostname of the server where htsget shall run. Also, replace `{YOUR_HOSTNAME_HERE}` in the both examples with the same hostname. It can be run in the same way as the first example.
+3. Run the `rems-app` service
+
+```bash
+docker compose up -d rems-app
+```
+
+4. Login to the REMS application (`http://localhost:3000`), so your user gets created in the database
+5. Initialize the application
+
+```bash
+./rems/setup.sh
+```
+
+At steps 2, 3 and 5 it is important not to `cd` into the `rems` directory.
+
+## Run the rest of the services
+
+```bash
+docker compose up -d
+```
+
+## Uploading a dataset to SDA
+
+In `upload.sh` there is a simple script that uploads a dataset to SDA.
+
+### Prerequisites
+
+- `sda-admin` and `sda-cli` in your `$PATH`
+- access token from `http://localhost:8085/`
+- `s3cmd.conf` file in the same directory as the script. You can just replace <access_token> in this example:
+
+```bash
+[default]
+access_token = <access_token>
+human_readable_sizes = True
+host_bucket = http://localhost:8002
+encrypt = False
+guess_mime_type = True
+multipart_chunk_size_mb = 50
+use_https = False
+access_key = jd123_lifescience-ri.eu
+secret_key = jd123_lifescience-ri.eu
+host_base = http://localhost:8002
+check_ssl_certificate = False
+encoding = UTF-8
+check_ssl_hostname = False
+socket_timeout = 30
+```
+
+### Usage
+
+1. Move all your data to a folder next to the script
+2. Run `./upload.sh <folder_name> <dataset_name>`
+3. After successful upload, you should be able to fetch the data using:
+
+```bash
+token=<access_token>
+curl -H "Authorization: Bearer $token" http://localhost:8443/s3/<dataset>/jd123_lifescience-ri.eu/<folder_name>/<file_name>
+```
+
+## Running a worflow from the compute-web
+
+1. Log in to `http://localhost:4180`
+2. Select a workflow on the home page
+3. Define the input directory as `<dataset>/<user_id>` (e.g. `DATASET001/jd123_lifescience-ri.eu`)
+4. Define the output directory. This is the directory in the s3 inbox bucket (e.g. `myWorklowOutput`)
+5. Click `Run`

@@ -1,0 +1,6 @@
+include:
+  - lsaai-mock/docker-compose.yaml
+  - rems/docker-compose.yaml
+  - storage-and-interfaces/docker-compose.yaml
+  - compute/docker-compose.yaml
+  - compute-web/docker-compose.yaml

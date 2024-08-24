@@ -1,0 +1,30 @@
+client-name: 'Sample client'
+client-id: 'app-123'
+client-secret: 'secret_value'
+redirect-uris:
+  [
+    'http://localhost:4180/oauth2/callback',
+    'http://localhost:3000/oidc-callback',
+    'http://localhost:8085/oidc/login',
+  ]
+
+token-endpoint-auth-method: 'client_secret_basic'
+scope:
+  [
+    'openid',
+    'profile',
+    'email',
+    'eduperson_entitlement',
+    'offline_access',
+    'client_dynamic_registration',
+    'client_dynamic_deregistration',
+    'ga4gh_passport_v1',
+  ]
+grant-types:
+  [
+    'authorization_code',
+    'refresh_token',
+    'urn:ietf:params:oauth:grant-type:token-exchange',
+    'client_credentials',
+  ]
+resource-ids: ['snake123']

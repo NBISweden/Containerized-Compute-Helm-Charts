@@ -1,0 +1,6 @@
+[
+  {
+    "iss": "https://aai.localhost/oidc/",
+    "jku": "https://aai.localhost/ga4gh-broker/jwk"
+  }
+]

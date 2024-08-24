@@ -1,0 +1,58 @@
+services:
+  rems-app:
+    container_name: rems_app
+    image: cscfi/rems:latest
+    depends_on:
+      rems-db:
+        condition: service_healthy
+      aai-proxy:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config.edn:/rems/config/config.edn
+      - ./theme/styles.css:/rems/theme/styles.css
+      - ./theme/theme.edn:/rems/theme/theme.edn
+      - ./theme/en.edn:/rems/theme/extra-translations/en.edn
+      - ./theme/logo_medium.png:/rems/theme/public/img/logo_medium.png
+      - ./theme/logo_small.png:/rems/theme/public/img/logo_small.png
+      - ./theme/ls_login.png:/rems/theme/public/img/ls_login.png
+      - ./private-key.jwk:/rems/keys/private-key.jwk
+      - ./public-key.jwk:/rems/keys/public-key.jwk
+      # Only needed when using a selfsigned certificate
+      - ../lsaai-mock/configuration/nginx/certs/nginx.crt:/rems/certs/aai.crt
+    networks:
+      rems:
+      my-app-network:
+        aliases:
+          - rems.localhost
+
+  rems-db:
+    container_name: rems_db
+    image: postgres:15
+    environment:
+      POSTGRES_DB: rems
+      POSTGRES_USER: rems
+      POSTGRES_PASSWORD: remspassword
+    ports:
+      - 5432:5432
+    # remove this if you don't want a persistent database
+    volumes:
+      - remsdb:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-h', 'localhost', '-U', 'rems']
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - rems
+
+volumes:
+  remsdb:
+    driver: local
+
+networks:
+  rems:
+  my-app-network:
+    external: true

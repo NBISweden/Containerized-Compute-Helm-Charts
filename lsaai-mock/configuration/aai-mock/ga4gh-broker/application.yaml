@@ -1,0 +1,58 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  level:
+    root: info
+    cz.muni.ics: debug
+mock-broker:
+  enabled: True
+  issuer: https://aai.localhost/oidc/
+  jku: https://aai.localhost/ga4gh-broker/jwk
+  path-to-jwk-file: /etc/lsaai-mock/keys.jwks
+  visa-configs-path: /etc/lsaai-mock/ga4gh-broker/users/
+  passport-repositories:
+    - name: Sample-REMS
+      url: http://rems.localhost:3000/api/permissions/{user_id}
+      jwks: http://rems.localhost:3000/api/jwk
+      headers:
+        - header: X-rems-api-key
+          value: test_api_key
+        - header: X-rems-user-id
+          value: robot
+
+visa-writers:
+  enabled: False
+  # Database connection
+  db:
+    #TODO: create additional user
+    url: jdbc:mysql://mysql:3306/ga4gh_broker
+    username: root
+    password: password
+    driver: 'com.mysql.cj.jdbc.Driver'
+  # Repositories that are able to write
+  repositories:
+    - name: Writer-REMS
+      # Location of JWKS
+      jwks: http://rems.localhost:3000/api/jwk
+      auth:
+        # can be one of
+        api-key:
+          api-key-header: x-visa-writer
+          api-key-value: test_api_key
+
+passport-v1-0:
+  enabled: True
+  auth:
+    - username: 'broker-aai-user'
+      password: 'broker-aai-pass'
+
+passport-v1-2:
+  enabled: True
+  auth:
+    introspection-client-id: broker
+    introspection-client-secret: broker-secret
+    introspection-uri: http://localhost:8080/oidc/introspect
