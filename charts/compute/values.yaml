@@ -1,0 +1,50 @@
+oidc:
+  url: https://login.elixir-czech.org/oidc/.well-known/openid-configuration
+  clientid: XXXX
+  clientsecret: XXXX
+  audience: snake123
+
+compute: kubernetes
+
+pvc:
+ name: storage
+ existing: false
+ storageClass: nfs-csi
+ size: 2Gi
+
+htsget:
+  disabled: false
+  protocol: https
+  sendpublickey: true
+
+basicauth:
+  user: XXX
+  password: XXX
+
+rpcclient:
+  user: XXX
+  password: XXX
+
+image: krkoo/funnel:2024-06-12
+
+funnel:
+  resources:
+    limits:
+      cpu: 2
+      memory: 4Gi
+      ephemeral-storage: 25Gi
+    requests:
+      cpu: 100m
+      memory: 4Gi
+      ephemeral-storage: 25Gi
+  serviceAccount: funnel-sa
+  runAsUser: 1000
+  seccompProfile: true
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  host: SOME_HOST

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: gdi-funnel
+version: 0.1
+appVersion: 0.1
+description: gdi-funnel
+maintainers:
+- name: CERIT-SC
+  email: root@cerit-sc.cz
+engine: gotpl
