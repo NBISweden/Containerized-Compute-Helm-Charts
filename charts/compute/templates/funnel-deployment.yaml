@@ -49,6 +49,12 @@ spec:
               name: funnel-deployment-storage
             - mountPath: /etc/config
               name: config-volume
+          readinessProbe:
+            httpGet:
+              path: /health.html
+              port: 8000
+            initialDelaySeconds: 1
+            periodSeconds: 5
       securityContext:
         fsGroup: 1000
         runAsNonRoot: true
