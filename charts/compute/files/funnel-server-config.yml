@@ -54,7 +54,7 @@ Kubernetes:
       completions: 1
       template:
         spec:
-          serviceAccountName: funnel-sa
+          serviceAccountName: {{ .Release.Name }}-sa
           restartPolicy: Never
           securityContext:
             fsGroup: 1000

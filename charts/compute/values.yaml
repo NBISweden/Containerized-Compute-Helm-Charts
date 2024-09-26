@@ -39,14 +39,17 @@ funnel:
       cpu: 100m
       memory: 4Gi
       ephemeral-storage: 25Gi
-  serviceAccount: funnel-sa
   runAsUser: 1000
   seccompProfile: true
 
 ingress:
   enabled: true
   className: nginx
-  annotations:
-    kubernetes.io/tls-acme: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  annotations: {}
+    # kubernetes.io/tls-acme: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
   host: SOME_HOST
+
+# if false, a ServiceAccount needs to be created with name .Release.Name-sa
+rbacEnabled: true
+createRole: true

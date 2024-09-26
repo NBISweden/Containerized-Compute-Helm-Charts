@@ -57,7 +57,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 {{- end }}
-      serviceAccount: {{ .Values.funnel.serviceAccount }}
+      serviceAccount: {{ .Release.Name }}-sa
       volumes:
         - name: funnel-deployment-storage
           persistentVolumeClaim:
