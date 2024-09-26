@@ -5,6 +5,7 @@ oidc:
   audience: snake123
 
 compute: kubernetes
+logLevel: info
 
 pvc:
  name: storage

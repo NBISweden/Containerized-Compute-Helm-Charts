@@ -3,7 +3,7 @@ Database: boltdb
 Compute: {{ .Values.compute }}
 
 Logger:
-  Level: debug
+  Level: {{ .Values.logLevel | quote }}
 
 HTSGETStorage:
   Disabled: {{ .Values.htsget.disabled }}

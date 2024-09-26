@@ -6,7 +6,7 @@ BoltDB:
 Compute: {{ .Values.compute }}
 
 Logger:
-  Level: debug
+  Level: {{ .Values.logLevel | quote }}
 
 HTSGETStorage:
   Disabled: {{ .Values.htsget.disabled }}
@@ -19,7 +19,7 @@ Server:
   OidcAuth:
     # URL of the OIDC service configuration:
     ServiceConfigUrl: {{ .Values.oidc.url }}
-    # Client ID and secret are sent with the token introspection request 
+    # Client ID and secret are sent with the token introspection request
     # (Basic authentication):
     ClientId: {{ .Values.oidc.clientid }}
     ClientSecret: {{ .Values.oidc.clientsecret }}
@@ -30,9 +30,9 @@ Server:
   BasicAuth:
     - User: {{ .Values.basicauth.user | quote }}
       Password: {{ .Values.basicauth.password | quote }}
-  
+
   HostName: 0.0.0.0
-  
+
 RPCClient:
   User: {{ .Values.basicauth.user | quote }}
   Password: {{ .Values.basicauth.password | quote }}
@@ -42,14 +42,14 @@ Kubernetes:
   DisableReconciler: false
   ReconcileRate: 5m
   Namespace: {{ .Release.Namespace }}
-  Template: | 
+  Template: |
     apiVersion: batch/v1
     kind: Job
     metadata:
       ## DO NOT CHANGE NAME
       name: {{ print "{{.TaskId}}" }}
       namespace: {{ print "{{.Namespace}}" }}
-    spec: 
+    spec:
       backoffLimit: 0
       completions: 1
       template:
@@ -61,7 +61,7 @@ Kubernetes:
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
-          containers: 
+          containers:
             - name: funnel-worker-{{ print "{{.TaskId}}" }}
               image: {{ .Values.image }}
               imagePullPolicy: Always
@@ -93,8 +93,8 @@ Kubernetes:
                   mountPath: /etc/config
                 - name: keys
                   mountPath: /keys
-    
-          volumes: 
+
+          volumes:
             - name: config-volume
               secret:
                 secretName: {{ .Release.Name }}-worker-config
