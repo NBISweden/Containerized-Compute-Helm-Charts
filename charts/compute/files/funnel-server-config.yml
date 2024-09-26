@@ -89,8 +89,7 @@ Kubernetes:
                 privileged: false
               volumeMounts:
                 - name: funnel-storage-{{ print "{{.TaskId}}" }}
-                  mountPath: /opt/funnel/funnel-work-dir/{{ print "{{.TaskId}}" }}
-                  subPath: {{ print "{{.TaskId}}" }}
+                  mountPath: /opt/funnel/funnel-work-dir
                 - name: config-volume
                   mountPath: /etc/config
                 - name: keys

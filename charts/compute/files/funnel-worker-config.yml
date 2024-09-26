@@ -24,6 +24,12 @@ Server:
   HostName: {{ .Release.Name }}
   RPCPort: 9090
 
+LocalStorage : {
+  AllowedDirs : [
+    "/opt/funnel/funnel-work-dir",
+  ]
+}
+
 Kubernetes:
   # Change to "kubernetes" to use the kubernetes executor
   Executor: {{ .Values.compute }}
