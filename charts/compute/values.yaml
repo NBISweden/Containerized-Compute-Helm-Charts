@@ -2,15 +2,16 @@ oidc:
   url: https://login.elixir-czech.org/oidc/.well-known/openid-configuration
   clientid: XXXX
   clientsecret: XXXX
-  audience: snake123
+  audience: ""
 
 compute: kubernetes
 logLevel: info
 
+# storageClass needs to support ReadWriteMany
 pvc:
- name: storage
+ name: ""
  existing: false
- storageClass: nfs-csi
+ storageClass: ""
  size: 2Gi
 
 htsget:
