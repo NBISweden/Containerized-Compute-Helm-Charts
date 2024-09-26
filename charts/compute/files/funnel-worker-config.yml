@@ -43,6 +43,7 @@ Kubernetes:
         spec:
           restartPolicy: Never
           securityContext:
+            fsGroup: 1000
             runAsUser: 1000
             runAsNonRoot: true
             seccompProfile:
@@ -67,6 +68,7 @@ Kubernetes:
               capabilities:
                 drop:
                   - ALL
+              privileged: false
             volumeMounts:
             - name: storage
               mountPath: /shared
