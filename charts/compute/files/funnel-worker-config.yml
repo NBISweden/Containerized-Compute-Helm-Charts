@@ -46,10 +46,10 @@ Kubernetes:
       backoffLimit: 0
       completions: 1
       template:
-        metadata:
-          labels:
-            kubernetes.io/job.executor: "true"
         spec:
+          metadata:
+            labels:
+              kubernetes.io/job.executor: "true"
           restartPolicy: Never
           securityContext:
             fsGroup: 1000
