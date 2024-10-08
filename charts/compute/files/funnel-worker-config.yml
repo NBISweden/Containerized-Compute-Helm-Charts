@@ -41,6 +41,7 @@ Kubernetes:
       name: {{ print "{{.TaskId}}-{{.JobId}}" }}
       namespace: {{ print "{{.Namespace}}" }}
       labels:
+        kubernetes.io/job.executor: "true"
         job-name: {{ print "{{.TaskId}}-{{.JobId}}" }}
     spec:
       backoffLimit: 0
