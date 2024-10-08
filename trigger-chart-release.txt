@@ -1,1 +1,1 @@
-trigger 0.5
+trigger 0.6
