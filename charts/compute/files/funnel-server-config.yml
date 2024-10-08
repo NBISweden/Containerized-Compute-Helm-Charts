@@ -53,6 +53,9 @@ Kubernetes:
       backoffLimit: 0
       completions: 1
       template:
+        metadata:
+            labels:
+              kubernetes.io/job.executor: "true"
         spec:
           serviceAccountName: {{ .Release.Name }}-sa
           restartPolicy: Never

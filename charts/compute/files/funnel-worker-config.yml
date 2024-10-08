@@ -47,9 +47,6 @@ Kubernetes:
       completions: 1
       template:
         spec:
-          metadata:
-            labels:
-              kubernetes.io/job.executor: "true"
           restartPolicy: Never
           securityContext:
             fsGroup: 1000
