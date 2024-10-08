@@ -41,6 +41,8 @@ funnel:
       ephemeral-storage: 25Gi
   runAsUser: 1000
   seccompProfile: true
+  # for debugging purposes
+  readinessProbeEnabled: true
 
 ingress:
   enabled: true
