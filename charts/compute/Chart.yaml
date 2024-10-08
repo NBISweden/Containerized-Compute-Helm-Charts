@@ -1,6 +1,6 @@
 apiVersion: v2
 name: gdi-funnel
-version: "0.2"
+version: "0.3"
 appVersion: "0.1"
 description: gdi-funnel
 maintainers:
