@@ -49,12 +49,14 @@ spec:
               name: funnel-deployment-storage
             - mountPath: /etc/config
               name: config-volume
+  {{- if .Values.funnel.readinessProbeEnabled }}
           readinessProbe:
             httpGet:
               path: /health.html
               port: 8000
             initialDelaySeconds: 1
             periodSeconds: 5
+  {{- end }}
       securityContext:
         fsGroup: 1000
         runAsNonRoot: true
