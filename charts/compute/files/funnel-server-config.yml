@@ -46,8 +46,6 @@ Kubernetes:
     apiVersion: batch/v1
     kind: Job
     metadata:
-      labels:
-        "kubernetes.io/job.executor": "true"
       ## DO NOT CHANGE NAME
       name: {{ print "{{.TaskId}}" }}
       namespace: {{ print "{{.Namespace}}" }}
