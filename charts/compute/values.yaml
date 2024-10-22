@@ -51,6 +51,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
   host: SOME_HOST
+  tlsEnabled: true # Set to false only for testing
 
 # if false, a ServiceAccount needs to be created with name .Release.Name-sa
 rbacEnabled: true
