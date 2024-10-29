@@ -24,12 +24,6 @@ Server:
   HostName: {{ .Release.Name }}
   RPCPort: 9090
 
-LocalStorage : {
-  AllowedDirs : [
-    "/opt/funnel/funnel-work-dir",
-  ]
-}
-
 Kubernetes:
   # Change to "kubernetes" to use the kubernetes executor
   Executor: {{ .Values.compute }}
@@ -49,8 +43,9 @@ Kubernetes:
         spec:
           restartPolicy: Never
           securityContext:
-            fsGroup: 1000
-            runAsUser: 1000
+            fsGroup: 65534
+            runAsUser: 65534
+            runAsGroup: 65534
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault

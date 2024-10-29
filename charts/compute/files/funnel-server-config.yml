@@ -61,7 +61,7 @@ Kubernetes:
           restartPolicy: Never
           securityContext:
             fsGroup: 1000
-            runAsUser: 1000
+            runAsUser: 65534
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault

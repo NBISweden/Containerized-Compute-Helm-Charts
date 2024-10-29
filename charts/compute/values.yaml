@@ -39,7 +39,7 @@ funnel:
       cpu: 100m
       memory: 4Gi
       ephemeral-storage: 25Gi
-  runAsUser: 1000
+  runAsUser: 65534
   seccompProfile: true
   # for debugging purposes
   readinessProbeEnabled: true
