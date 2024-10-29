@@ -70,7 +70,7 @@ spec:
         - name: funnel-deployment-storage
           persistentVolumeClaim:
             claimName: {{ .Values.pvc.name }}
-        - secret:
+        - name: config-volume
+          secret:
             defaultMode: 420
             secretName: {{ .Release.Name }}-server-config
-          name: config-volume
