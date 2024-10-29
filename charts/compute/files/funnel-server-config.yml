@@ -11,18 +11,20 @@ Logger:
 HTSGETStorage:
   Disabled: {{ .Values.htsget.disabled }}
   Protocol: {{ .Values.htsget.protocol }}
-  SendPublicKey: {{ .Values.htsget.sendpublickey }}
+  Timeout: 360s
 
 Server:
   # Require Bearer JWT authentication for the server APIs.
   # Server won't launch when configuration URL cannot be loaded.
   OidcAuth:
     # URL of the OIDC service configuration:
-    ServiceConfigUrl: {{ .Values.oidc.url }}
+    ServiceConfigURL: {{ .Values.oidc.url }}
     # Client ID and secret are sent with the token introspection request
     # (Basic authentication):
     ClientId: {{ .Values.oidc.clientid }}
     ClientSecret: {{ .Values.oidc.clientsecret }}
+    # This is irrelevant when only backend is deployed but needs be non-empty
+    RedirectURL: "http://localhost:8000/login"
     # Optional: if specified, this scope value must be in the token:
     # RequireScope:
     # Optional: if specified, this audience value must be in the token:
@@ -30,6 +32,7 @@ Server:
   BasicAuth:
     - User: {{ .Values.basicauth.user | quote }}
       Password: {{ .Values.basicauth.password | quote }}
+      Admin: true
 
   HostName: 0.0.0.0
 

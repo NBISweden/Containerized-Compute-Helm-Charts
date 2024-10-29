@@ -8,7 +8,7 @@ Logger:
 HTSGETStorage:
   Disabled: {{ .Values.htsget.disabled }}
   Protocol: {{ .Values.htsget.protocol }}
-  SendPublicKey: {{ .Values.htsget.sendpublickey }}
+  Timeout: 360s
 
 RPCClient:
   MaxRetries: 3
