@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   gdi-funnel:
   - apiVersion: v2
+    appVersion: "0.2"
+    created: "2024-10-29T18:01:06.353756391Z"
+    description: gdi-funnel
+    digest: 6ed4d66d7f00906da669ed7546892aa290c7a119e130cd18290bb34029780073
+    maintainers:
+    - email: root@cerit-sc.cz
+      name: CERIT-SC
+    name: gdi-funnel
+    urls:
+    - https://github.com/NBISweden/Containerized-Compute-Helm-Charts/releases/download/gdi-funnel-0.7.0/gdi-funnel-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     appVersion: "0.1"
     created: "2024-10-29T14:27:39.801463536Z"
     description: gdi-funnel
@@ -97,4 +109,4 @@ entries:
     urls:
     - https://github.com/NBISweden/Containerized-Compute-CERIT-SC/releases/download/gdi-funnel-0.1/gdi-funnel-0.1.tgz
     version: "0.1"
-generated: "2024-10-29T14:27:39.801493011Z"
+generated: "2024-10-29T18:01:06.353789754Z"
