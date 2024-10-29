@@ -1,1 +1,1 @@
-trigger 0.6.1
+trigger 0.6.2
