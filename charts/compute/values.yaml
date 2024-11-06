@@ -43,6 +43,12 @@ funnel:
   # for debugging purposes
   readinessProbeEnabled: true
 
+# limit resources for master/worker containers
+computeResourceLimits:
+  cpu: 4
+  memory: 8G
+  ephemeralStorage: 10G
+
 ingress:
   enabled: true
   className: nginx
