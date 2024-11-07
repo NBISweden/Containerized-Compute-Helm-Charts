@@ -45,9 +45,14 @@ funnel:
 
 # limit resources for master/worker containers
 computeResourceLimits:
-  cpu: 4
-  memory: 8G
-  ephemeralStorage: 10G
+  master:
+    cpu: 1
+    memory: 1G
+    ephemeralStorage: 10G
+  worker:
+    cpu: 8
+    memory: 8G
+    ephemeralStorage: 10G
 
 ingress:
   enabled: true

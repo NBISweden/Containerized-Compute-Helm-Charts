@@ -85,9 +85,9 @@ Kubernetes:
                   memory: {{ print "{{if ne .RamGb 0.0 -}}{{printf \"%.0fG\" .RamGb}}{{else}}{{\"16M\"}}{{end}}" }}
                   ephemeral-storage: {{ print "{{if ne .DiskGb 0.0 -}}{{printf \"%.0fG\" .DiskGb}}{{else}}{{\"100M\"}}{{end}}" }}
                 limits:
-                  cpu: {{ .Values.computeResourceLimits.cpu | quote}}
-                  memory: {{ .Values.computeResourceLimits.memory | quote }}
-                  ephemeral-storage: {{ .Values.computeResourceLimits.ephemeralStorage | quote}}
+                  cpu: {{ .Values.computeResourceLimits.master.cpu | quote }}
+                  memory: {{ .Values.computeResourceLimits.master.memory | quote }}
+                  ephemeral-storage: {{ .Values.computeResourceLimits.master.ephemeralStorage | quote }}
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities:
