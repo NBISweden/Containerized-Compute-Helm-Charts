@@ -43,9 +43,9 @@ Kubernetes:
         spec:
           restartPolicy: Never
           securityContext:
-            fsGroup: 65534
-            runAsUser: 65534
-            runAsGroup: 65534
+            fsGroup: {{ .Values.securityContext.worker.fsGroup}}
+            runAsUser: {{ .Values.securityContext.worker.runAsUser}}
+            runAsGroup: {{ .Values.securityContext.worker.runAsGroup}}
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
