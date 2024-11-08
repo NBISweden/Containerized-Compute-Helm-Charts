@@ -54,6 +54,15 @@ computeResourceLimits:
     memory: 8G
     ephemeralStorage: 10G
 
+securityContext:
+  master:
+    fsGroup: 1000
+    runAsUser: 1000
+  worker:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsGroup: 1000
+
 ingress:
   enabled: true
   className: nginx

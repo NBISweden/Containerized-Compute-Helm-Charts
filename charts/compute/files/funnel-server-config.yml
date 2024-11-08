@@ -63,8 +63,8 @@ Kubernetes:
           serviceAccountName: {{ .Release.Name }}-sa
           restartPolicy: Never
           securityContext:
-            fsGroup: 1000
-            runAsUser: 65534
+            fsGroup: {{ .Values.securityContext.master.fsGroup}}
+            runAsUser: {{ .Values.securityContext.master.runAsUser}}
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
