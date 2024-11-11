@@ -6,9 +6,12 @@ Logger:
   Level: {{ .Values.logLevel | quote }}
 
 HTSGETStorage:
-  Disabled: {{ .Values.htsget.disabled }}
-  Protocol: {{ .Values.htsget.protocol }}
-  Timeout: 360s
+  ServiceURL: {{ .Values.htsget.serviceURL | quote }}
+  Timeout: {{ .Values.htsget.timeout | quote }}
+
+SDAStorage:
+  ServiceURL: {{ .Values.sda.serviceURL | quote }}
+  Timeout: {{ .Values.sda.timeout | quote }}
 
 RPCClient:
   MaxRetries: 3

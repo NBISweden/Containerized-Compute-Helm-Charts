@@ -15,8 +15,12 @@ pvc:
  size: 2Gi
 
 htsget:
-  disabled: false
-  protocol: https
+  serviceURL: http://htsget.local
+  timeout: 360s
+
+sda:
+  serviceURL: http://download.local
+  timeout: 360s
 
 basicauth:
   user: XXX
@@ -36,9 +40,9 @@ funnel:
       ephemeral-storage: 25Gi
     requests:
       cpu: 100m
-      memory: 4Gi
+      memory: 2Gi
       ephemeral-storage: 25Gi
-  runAsUser: 65534
+  runAsUser: 1000
   seccompProfile: true
   # for debugging purposes
   readinessProbeEnabled: true
