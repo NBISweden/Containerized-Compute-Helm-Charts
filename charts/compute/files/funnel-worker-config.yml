@@ -27,6 +27,17 @@ Server:
   HostName: {{ .Release.Name }}
   RPCPort: 9090
 
+AmazonS3:
+  Disabled: {{ .Values.awsS3.disabled }}
+  Key: {{ .Values.awsS3.key | quote }}
+  Secret: {{ .Values.awsS3.secret | quote }}
+
+GenericS3:
+  - Disabled: {{ .Values.genericS3.disabled }}
+    Endpoint: {{ .Values.genericS3.endpoint | quote }}
+    Key: {{ .Values.genericS3.key | quote }}
+    Secret: {{ .Values.genericS3.secret | quote }}
+
 Kubernetes:
   # Change to "kubernetes" to use the kubernetes executor
   Executor: {{ .Values.compute }}

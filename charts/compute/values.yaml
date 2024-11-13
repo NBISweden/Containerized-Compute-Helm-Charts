@@ -22,6 +22,18 @@ sda:
   serviceURL: http://download.local
   timeout: 360s
 
+# Enable and configure generic non-aws (ceph, minio etc) S3 storage
+genericS3:
+  disabled: true
+  endpoint: ""
+  key: ""
+  secret: ""
+
+# Enable and configure aws S3 storage
+awsS3:
+  disabled: true
+  key: ""
+  secret: ""
 basicauth:
   user: XXX
   password: XXX
