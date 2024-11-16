@@ -86,13 +86,8 @@ Kubernetes:
             - name: funnel-worker-{{ print "{{.TaskId}}" }}
               image: {{ .Values.image }}
               imagePullPolicy: Always
-              args:
-                - "worker"
-                - "run"
-                - "--config"
-                - "/etc/config/funnel-worker-config.yml"
-                - "--taskID"
-                - {{ print "{{.TaskId}}" }}
+              command: ["/app/funnel"]
+              args: ["worker", "run", "--config", "/etc/config/funnel-worker-config.yml", "--taskID", {{ print "{{.TaskId}}" }}]
               resources:
                 requests:
                   cpu: {{ print "{{if ne .Cpus 0 -}}{{.Cpus}}{{ else }}{{\"100m\"}}{{end}}" }}
