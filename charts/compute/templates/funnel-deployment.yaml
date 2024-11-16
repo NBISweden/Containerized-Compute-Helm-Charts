@@ -23,14 +23,11 @@ spec:
         app: {{ .Release.Name }}
     spec:
       containers:
-        - args:
-            - server
-            - run
-            - '--config'
-            - /etc/config/funnel-server-config.yml
+        - name: funnel
+          command: ["/app/funnel"]
+          args: ["server", "run", "--config", "/etc/config/funnel-server-config.yml"]
           image: {{ .Values.image }}
           imagePullPolicy: Always
-          name: funnel
           ports:
             - containerPort: 8000
               protocol: TCP
